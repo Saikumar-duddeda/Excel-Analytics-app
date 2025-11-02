@@ -1,0 +1,44 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "excel-main/frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "build"
+      }
+    },
+    {
+      "src": "excel-main/backend/server.py",
+      "use": "@vercel/python",
+      "config": {
+        "runtime": "python3.11"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/excel-main/backend/server.py"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/excel-main/frontend/$1"
+    }
+  ],
+  "env": {
+    "MONGO_URL": "@mongo_url",
+    "DB_NAME": "@db_name",
+    "JWT_SECRET": "@jwt_secret",
+    "JWT_ALGORITHM": "HS256",
+    "JWT_EXPIRATION_HOURS": "72",
+    "ADMIN_EMAIL": "@admin_email",
+    "ADMIN_PASSWORD": "@admin_password",
+    "CORS_ORIGINS": "@cors_origins"
+  },
+  "functions": {
+    "excel-main/backend/server.py": {
+      "runtime": "python3.11"
+    }
+  }
+}
